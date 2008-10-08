@@ -1,0 +1,30 @@
+From: Pradeep Gowda
+Title: Home
+Date: Tue Oct  7 16:26:24 EDT 2008
+Content-Type: text/x-textile
+
+
+h1. Webgen
+
+webgen is a Free and Open Source static website generator written using Python. 
+
+
+h2. Installation
+
+You will need python 2.4 or later (developed on Python 2.5). 
+
+**Library dependencies**
+
+* "Textile":http://pypi.python.org/pypi/textile
+* "Pymarkdown2":http://code.google.com/p/python-markdown2/
+
+Both can be installed using `easy_install`.
+
+h2. Usage
+
+Read `config.py`. Change defaults to reflect your preferences. To see how this works, run:
+ `python webgen.py`. You will get the generated html files in htdocs directory.
+
+
+
+	
