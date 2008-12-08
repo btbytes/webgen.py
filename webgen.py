@@ -6,8 +6,8 @@ Generate a static website
 
 Assumptions:
 
- * website is one level deep
  * copying any media files over to the output directory is done by the user.
+ * Web site can not have any subdirectories that are named the same as the input directory.
  
 '''
 import os
@@ -64,14 +64,13 @@ def parse(fname):
 get_outp = lambda s:'.'.join(s.split('.')[:-1]) + '.html'
            
         
-def main():
-    files = os.listdir(input_dir)
+def parse_directory(current_dir, files, output_dir):
     files = [f for f in files if ext(f) in options['extensions']]
     f = open(template, 'r')
     blob = Template(f.read())
     f.close()
     for f in files:
-        inp = os.path.join(input_dir,f)
+        inp = os.path.join(current_dir,f)
         outp = get_outp(os.path.join(output_dir,f))
         headers, body = parse(inp)
         format = options['format']
@@ -93,7 +92,17 @@ def main():
         outf = open(outp, 'w')
         outf.write(output)
         outf.close()
-        
+
+def main():
+    ### Walks through the input dir creating finding all subdirectories.
+    for root, dirs, files in os.walk(input_dir):
+        output = root.replace(input_dir, output_dir)
+        ### Checks if the directory exists in output and creates it if false.
+        if not os.path.isdir(output):
+            os.makedirs(output)
+
+        parse_directory(root, files, output)
+
     
 if __name__ == '__main__':
     main()
