@@ -63,16 +63,30 @@ def parse(fname):
 
 get_outp = lambda s:'.'.join(s.split('.')[:-1]) + '.html'
            
-        
-def parse_directory(current_dir, files, output_dir):
-    files = [f for f in files if ext(f) in options['extensions']]
+def get_template(template_dir, template):
+    """Takes the directory where templates are located and the template name. Returns a blob containing the template."""
+    template = os.path.join(template_dir, template)
+
     f = open(template, 'r')
     blob = Template(f.read())
     f.close()
+    return blob
+        
+def parse_directory(current_dir, files, output_dir):
+    files = [f for f in files if ext(f) in options['extensions']]
     for f in files:
         inp = os.path.join(current_dir,f)
         outp = get_outp(os.path.join(output_dir,f))
+
         headers, body = parse(inp)
+
+        # Attempt to use the file specified template, if not fall back to default.
+        blob = get_template(template_dir, template)
+        try:
+            blob = get_template(template_dir, headers['template'])
+        except:
+            pass
+
         format = options['format']
         try:
             format = headers['content-type']
