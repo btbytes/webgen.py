@@ -63,7 +63,7 @@ def parse(fname):
 
 get_outp = lambda s:'.'.join(s.split('.')[:-1]) + '.html'
            
-def get_template(template_dir, template):
+def get_template(template):
     """Takes the directory where templates are located and the template name. Returns a blob containing the template."""
     template = os.path.join(template_dir, template)
 
@@ -75,15 +75,15 @@ def get_template(template_dir, template):
 def parse_directory(current_dir, files, output_dir):
     files = [f for f in files if ext(f) in options['extensions']]
     for f in files:
-        inp = os.path.join(current_dir,f)
-        outp = get_outp(os.path.join(output_dir,f))
+        inp = os.path.join(current_dir, f)
+        outp = get_outp(os.path.join(output_dir, f))
 
         headers, body = parse(inp)
 
         # Attempt to use the file specified template, if not fall back to default.
-        blob = get_template(template_dir, template)
+        blob = get_template(template)
         try:
-            blob = get_template(template_dir, headers['template'])
+            blob = get_template(headers['template'])
         except:
             pass
 
